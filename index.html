@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Unstoppable Power of Showing Up</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font import */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000; /* Black background */
+            color: #fff; /* White text */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Prevent scrollbars */
+        }
+
+        .presentation-container {
+            width: 90%; /* Responsive width */
+            max-width: 800px; /* Max width for presentation content */
+            height: 90vh; /* Responsive height */
+            max-height: 600px; /* Max height for presentation content */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+
+        .slide {
+            display: none; /* Hidden by default */
+            width: 100%;
+            height: 100%;
+            min-height: 400px; /* Ensure slides have a minimum height */
+            background-color: #000; /* Slides are black */
+            color: #fff; /* Text is white */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            box-sizing: border-box;
+            transition: opacity 0.5s ease-in-out;
+            opacity: 0;
+            position: absolute; /* Position slides on top of each other */
+            top: 0;
+            left: 0;
+            border-radius: 0.75rem; /* Rounded corners */
+        }
+
+        .slide.active {
+            display: flex; /* Show active slide */
+            opacity: 1;
+            position: relative; /* Bring active slide to front */
+        }
+
+        .slide h1 {
+            font-size: 3rem; /* Large heading for impact */
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .slide h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .slide p {
+            font-size: 1.5rem; /* Readable paragraph text */
+            line-height: 1.5;
+            max-width: 90%; /* Limit text width */
+        }
+
+        /* Updated navigation buttons styling */
+        .navigation-buttons {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%; /* Span full width to position buttons at edges */
+            display: flex;
+            justify-content: space-between; /* Push buttons to ends */
+            padding: 0 1rem; /* Padding from edges */
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        .nav-button {
+            background-color: #333; /* Dark grey buttons */
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1rem; /* Smaller padding for just arrows */
+            font-size: 2rem; /* Larger font size for arrows */
+            cursor: pointer;
+            border-radius: 0.5rem; /* Rounded corners for buttons */
+            transition: background-color 0.3s ease;
+            width: 50px; /* Fixed width for circular appearance */
+            height: 50px; /* Fixed height for circular appearance */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 1; /* Adjust line height for vertical centering of arrow */
+        }
+
+        .nav-button:hover {
+            background-color: #555; /* Lighter grey on hover */
+        }
+
+        .nav-button:disabled {
+            background-color: #1a1a1a;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        /* SVG Icon Styling - Reduced size for better fit */
+        .icon-svg {
+            width: 100px; /* Reduced size */
+            height: 100px; /* Reduced size */
+            margin-bottom: 1rem; /* Slightly reduced margin */
+            stroke: #fff; /* White stroke on black background */
+            stroke-width: 2;
+            fill: none;
+        }
+        .icon-svg.fill {
+            fill: #fff; /* For filled shapes on black background */
+            stroke: none;
+        }
+        .icon-svg text {
+            fill: #fff; /* Ensure text within SVG is white */
+            font-size: 10px; /* Adjusted font size within SVG */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .presentation-container {
+                width: 95%;
+                height: 95vh;
+            }
+            .slide h1 {
+                font-size: 2.2rem;
+            }
+            .slide h2 {
+                font-size: 1.5rem;
+            }
+            .slide p {
+                font-size: 1.2rem;
+            }
+            .navigation-buttons {
+                padding: 0 0.5rem; /* Less padding on smaller screens */
+            }
+            .nav-button {
+                padding: 0.5rem 0.8rem;
+                font-size: 1.5rem;
+                width: 40px;
+                height: 40px;
+            }
+            .icon-svg {
+                width: 80px; /* Adjusted for smaller screens */
+                height: 80px;
+            }
+            .icon-svg text {
+                font-size: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .slide h1 {
+                font-size: 1.8rem;
+            }
+            .slide h2 {
+                font-size: 1.2rem;
+            }
+            .slide p {
+                font-size: 1rem;
+            }
+            .presentation-container {
+                padding: 0.5rem;
+            }
+            .nav-button {
+                font-size: 1.2rem;
+                width: 35px;
+                height: 35px;
+            }
+            .icon-svg {
+                width: 60px; /* Adjusted for smallest screens */
+                height: 60px;
+            }
+            .icon-svg text {
+                font-size: 7px;
+            }
+        }
+
+        /* Specific styles for the Gemini feature */
+        .gemini-section {
+            background-color: #1a1a1a; /* Darker background for the Gemini feature */
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-top: 2rem;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+        }
+        .gemini-section textarea {
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #555;
+            padding: 0.75rem;
+            border-radius: 0.25rem;
+            width: 100%;
+            resize: vertical;
+            min-height: 80px;
+        }
+        .gemini-section button {
+            background-color: #666;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+        }
+        .gemini-section button:hover {
+            background-color: #888;
+        }
+        .gemini-result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 0.25rem;
+            text-align: left;
+            font-size: 1rem;
+            white-space: pre-wrap; /* Preserve line breaks */
+            display: none; /* Hidden by default */
+        }
+        .loading-indicator {
+            margin-top: 1rem;
+            color: #aaa;
+            font-style: italic;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide active" id="slide1">
+            <h1 class="text-white">The Unstoppable Power of Showing Up</h1>
+            <h2 class="text-white">Consistency & Smart Habits</h2>
+            <div class="flex flex-col items-center my-4">
+                <svg class="icon-svg" viewBox="0 0 100 100">
+                    <circle cx="50" cy="30" r="15" stroke-dasharray="5 5" opacity="0.7"></circle>
+                    <path d="M45 45 L55 45 L55 60 L45 60 Z" opacity="0.7"></path>
+                    <path d="M48 60 L48 70 M52 60 L52 70" stroke-linecap="round" opacity="0.7"></path>
+                    <text x="50" y="85" text-anchor="middle" font-size="10" fill="#fff">Motivation (Fades)</text>
+                </svg>
+                <svg class="icon-svg" viewBox="0 0 100 100">
+                    <path d="M50 90 L50 40 C50 20 20 20 20 40 L20 90" stroke-linecap="round"></path>
+                    <path d="M50 90 L50 40 C50 20 80 20 80 40 L80 90" stroke-linecap="round"></path>
+                    <circle cx="50" cy="90" r="5" class="fill"></circle>
+                    <text x="50" y="15" text-anchor="middle" font-size="10" fill="#fff">Consistency (Grows)</text>
+                </svg>
+            </div>
+            <p class="text-white">
+                "Hello everyone, and a very warm welcome! I’m [Your Name], and for the next 40 minutes, we're going to explore something fundamental to achieving almost anything worthwhile: the incredible power of consistency, and how we can build it using smart strategies like habit anchoring."
+            </p>
+        </div>
+
+        <div class="slide" id="slide2">
+            <h1 class="text-white">Motivation Myth vs. Consistency Engine</h1>
+            <h2 class="text-white">Rocket Fuel vs. Steady Progress</h2>
+            <div class="flex flex-col items-center my-4">
+                <svg class="icon-svg" viewBox="0 0 100 100">
+                    <path d="M20 80 Q 50 20, 80 80" stroke="#fff" stroke-width="2" stroke-dasharray="5 5" opacity="0.7"></path>
+                    <circle cx="20" cy="80" r="5" fill="#fff"></circle>
+                    <text x="50" y="95" text-anchor="middle" font-size="10" fill="#fff">Fading Path</text>
+                </svg>
+            </div>
+            <p class="text-white">
+                "While motivation is a fantastic starter, it's like rocket fuel – powerful, but it burns out quickly. It’s an emotion, and emotions are temporary."
+            </p>
+            <p class="text-white mt-4">
+                "Consistency is a steady, reliable engine. It’s about showing up and putting in the effort, especially on the days you don’t feel like it."
+            </p>
+        </div>
+
+        <div class="slide" id="slide3">
+            <h1 class="text-white">Tiny Gains, Monumental Results</h1>
+            <h2 class="text-white">The Compound Effect: 1% Better Every Day</h2>
+            <div class="w-full max-w-xl mx-auto my-4 p-4 border border-gray-600 rounded-lg">
+                <svg viewBox="0 0 300 200" class="w-full h-auto">
+                    <line x1="10" y1="180" x2="290" y2="180" stroke="#444" stroke-width="0.5"></line>
+                    <line x1="10" y1="130" x2="290" y2="130" stroke="#444" stroke-width="0.5"></line>
+                    <line x1="10" y1="80" x2="290" y2="80" stroke="#444" stroke-width="0.5"></line>
+                    <line x1="10" y1="30" x2="290" y2="30" stroke="#444" stroke-width="0.5"></line>
+
+                    <line x1="10" y1="10" x2="10" y2="180" stroke="#fff" stroke-width="1"></line>
+                    <line x1="10" y1="180" x2="290" y2="180" stroke="#fff" stroke-width="1"></line>
+
+                    <text x="5" y="100" text-anchor="end" font-size="10" fill="#fff" transform="rotate(-90 5 100)">Value / Effort Unit</text>
+                    <text x="150" y="195" text-anchor="middle" font-size="10" fill="#fff">Time (Days)</text>
+
+                    <polyline points="10,150 290,150" stroke="#888" stroke-width="2" fill="none" />
+                    <text x="200" y="145" font-size="10" fill="#888">No Improvement</text>
+
+                    <path d="M10,150 C 70,140 130,100 200,50 C 250,30 290,10" stroke="#fff" stroke-width="2" fill="none" />
+                    <text x="150" y="40" font-size="10" fill="#fff">1% Daily Improvement</text>
+                </svg>
+            </div>
+            <p class="text-white">
+                "Imagine you decide to get just 1% better at something each day... The results can be extraordinary. It's like a snowball rolling down a hill."
+            </p>
+        </div>
+
+        <div class="slide" id="slide4">
+            <h1 class="text-white">Making Consistency Easier</h1>
+            <h2 class="text-white">The Art of Habit Anchoring</h2>
+            <div class="flex flex-col items-center my-4">
+                <svg class="icon-svg" viewBox="0 0 100 100">
+                    <path d="M50 10 L50 50 A20 20 0 1 0 50 90 A20 20 0 1 0 50 50 Z" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <line x1="30" y1="70" x2="70" y2="70" stroke-linecap="round"></line>
+                    <circle cx="50" cy="10" r="5" class="fill"></circle>
+                </svg>
+                <div class="flex items-center space-x-4">
+                    <div class="p-4 border border-gray-600 rounded-md text-lg font-semibold">IF: Existing Habit</div>
+                    <svg width="30" height="20" viewBox="0 0 30 20">
+                        <line x1="0" y1="10" x2="25" y2="10" stroke="#fff" stroke-width="2"></line>
+                        <polygon points="20,5 30,10 20,15" fill="#fff"></polygon>
+                    </svg>
+                    <div class="p-4 border border-gray-600 rounded-md text-lg font-semibold">THEN: New Habit</div>
+                </div>
+            </div>
+            <p class="text-white">
+                "You link a new habit you want to build to an existing habit that’s already ingrained in your routine."
+            </p>
+            <p class="text-white mt-4">
+                Example: "After I brush my teeth, I will meditate for 5 minutes."
+            </p>
+        </div>
+
+        <div class="slide" id="slide5">
+            <h1 class="text-white">Start Small, Overcome Dread</h1>
+            <h2 class="text-white">The 2-Minute Rule</h2>
+            <div class="flex justify-center my-4">
+                <svg class="icon-svg" viewBox="0 0 100 100">
+                    <rect x="20" y="60" width="60" height="20" rx="5" ry="5" class="fill"></rect>
+                    <path d="M50 60 L50 30" stroke="#fff" stroke-width="2" stroke-linecap="round"></path>
+                    <circle cx="50" cy="25" r="5" class="fill"></circle>
+                    <text x="50" y="95" text-anchor="middle" font-size="10" fill="#fff">First Step</text>
+                </svg>
+            </div>
+            <p class="text-white">
+                "Scale down any new habit so it takes less than two minutes to do."
+            </p>
+            <ul class="list-none text-lg md:text-xl mt-4 space-y-2 text-left mx-auto max-w-md">
+                <li class="flex items-start">✓ Want to read more? "Read one page."</li>
+                <li class="flex items-start">✓ Want to exercise? "Put on my workout clothes."</li>
+            </ul>
+        </div>
+
+        <div class="slide" id="slide6">
+            <h1 class="text-white">Track & Celebrate Progress</h1>
+            <h2 class="text-white">Don't Break the Chain!</h2>
+            <div class="flex justify-center my-4">
+                <svg class="icon-svg" viewBox="0 0 100 100">
+                    <circle cx="30" cy="50" r="15" stroke-linecap="round" stroke-linejoin="round"></circle>
+                    <circle cx="70" cy="50" r="15" stroke-linecap="round" stroke-linejoin="round"></circle>
+                    <line x1="45" y1="50" x2="55" y2="50" stroke-linecap="round"></line>
+                    <text x="50" y="95" text-anchor="middle" font-size="10" fill="#fff">Chain</text>
+                </svg>
+            </div>
+            <p class="text-white">
+                "It’s incredibly helpful to track your progress and acknowledge your efforts. You don’t want to 'break the chain.'"
+            </p>
+            <div id="habitChain" class="flex justify-center space-x-2 md:space-x-3 my-4">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-white flex items-center justify-center text-white text-2xl font-bold"></div>
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-white flex items-center justify-center text-white text-2xl font-bold"></div>
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-white flex items-center justify-center text-white text-2xl font-bold"></div>
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-white flex items-center justify-center text-white text-2xl font-bold"></div>
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-white flex items-center justify-center text-white text-2xl font-bold"></div>
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-white flex items-center justify-center text-white text-2xl font-bold"></div>
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-white flex items-center justify-center text-white text-2xl font-bold"></div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide7">
+            <h1 class="text-white">The Long Game</h1>
+            <h2 class="text-white">Small Hinges Swing Big Doors</h2>
+            <div class="flex justify-center my-4">
+                <svg class="icon-svg" viewBox="0 0 100 100">
+                    <rect x="20" y="10" width="60" height="80" stroke="#fff" stroke-width="2" fill="none"></rect>
+                    <rect x="18" y="20" width="5" height="10" fill="#fff"></rect>
+                    <text x="50" y="95" text-anchor="middle" font-size="10" fill="#fff">Big Door, Small Hinge</text>
+                </svg>
+            </div>
+            <p class="text-white">
+                "Motivation is a spark, but consistency is the slow burn that achieves lasting results."
+            </p>
+            <p class="text-white mt-4">
+                "Your tiny, consistent habits are like small hinges that can swing open massive doors of opportunity and transformation."
+            </p>
+        </div>
+
+        <div class="slide" id="slide8">
+            <h1 class="text-white">Your Turn: One Small Step</h1>
+            <h2 class="text-white">Challenge & Invitation</h2>
+            <div class="flex justify-center my-4">
+                <svg class="icon-svg" viewBox="0 0 100 100">
+                    <path d="M50 10 L60 30 L80 30 L70 50 L90 60 L70 70 L80 90 L60 90 L50 70 L40 90 L20 90 L30 70 L10 60 L30 50 L20 30 L40 30 Z" fill="#fff"></path>
+                    <text x="50" y="50" text-anchor="middle" font-size="10" fill="#000">🚀</text>
+                    <text x="50" y="95" text-anchor="middle" font-size="10" fill="#fff">Take Action</text>
+                </svg>
+            </div>
+            <p class="text-white mb-6">
+                "Think about one small positive change you’d like to make. Anchor it, use the two-minute rule."
+            </p>
+            <p class="text-white text-lg font-semibold">
+                "The journey to significant achievement isn't about giant leaps; it’s about consistent, small steps."
+            </p>
+
+            <div class="gemini-section flex flex-col items-center mt-8">
+                <h3 class="text-white text-xl font-semibold mb-4">✨ Get a Tiny Habit Idea! ✨</h3>
+                <textarea id="goalInput" placeholder="Describe your goal (e.g., 'I want to be healthier', 'I want to learn a new skill')..." class="p-2 rounded-md w-full"></textarea>
+                <button id="generateHabitBtn" class="mt-4 py-2 px-4 rounded-md">Generate Idea</button>
+                <div id="loadingIndicator" class="loading-indicator mt-2">Generating...</div>
+                <div id="habitResult" class="gemini-result mt-4" style="display: none;"></div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide9">
+            <h1 class="text-white">Thank You & Q&A</h1>
+            <h2 class="text-white">Small Steps, Big Results</h2>
+            <p class="text-white mt-4">
+                I hope this has given you some practical tools to build habits that stick.
+            </p>
+            <p class="text-white mt-8 text-xl font-semibold">
+                [Your Name]
+            </p>
+            <p class="text-white text-sm mt-2">
+                [Your Contact Details/Email/Website]
+            </p>
+        </div>
+
+        <div class="navigation-buttons">
+            <button id="prevBtn" class="nav-button">&lt;</button>
+            <button id="nextBtn" class="nav-button">&gt;</button>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        let currentSlideIndex = 0;
+
+        /**
+         * Displays the specified slide and updates navigation button states.
+         * @param {number} index - The index of the slide to display.
+         */
+        function showSlide(index) {
+            // Hide all slides
+            slides.forEach((slide) => {
+                slide.classList.remove('active');
+            });
+
+            // Show the active slide
+            if (slides[index]) {
+                slides[index].classList.add('active');
+            }
+
+            // Update button states
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === slides.length - 1;
+        }
+
+        // Event listener for the 'Next' button
+        nextBtn.addEventListener('click', () => {
+            if (currentSlideIndex < slides.length - 1) {
+                currentSlideIndex++;
+                showSlide(currentSlideIndex);
+            }
+        });
+
+        // Event listener for the 'Previous' button
+        prevBtn.addEventListener('click', () => {
+            if (currentSlideIndex > 0) {
+                currentSlideIndex--;
+                showSlide(currentSlideIndex);
+            }
+        });
+
+        // Gemini API Integration
+        const generateHabitBtn = document.getElementById('generateHabitBtn');
+        const goalInput = document.getElementById('goalInput');
+        const habitResult = document.getElementById('habitResult');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+
+        if (generateHabitBtn) {
+            generateHabitBtn.addEventListener('click', async () => {
+                const userGoal = goalInput.value.trim();
+                if (!userGoal) {
+                    habitResult.textContent = "Please enter a goal to get a habit idea!";
+                    habitResult.style.display = 'block';
+                    return;
+                }
+
+                loadingIndicator.style.display = 'block';
+                habitResult.style.display = 'none';
+                habitResult.textContent = ''; // Clear previous result
+
+                try {
+                    let chatHistory = [];
+                    const prompt = `Given the user's goal: "${userGoal}", suggest a tiny habit (takes less than 2 minutes) and an existing habit it can be anchored to. Format the response as: "Tiny Habit: [Your Tiny Habit]\nAnchor: [Existing Habit to Anchor To]".`;
+                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+
+                    const payload = { contents: chatHistory };
+                    const apiKey = ""; // Leave as empty string, Canvas will provide at runtime
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await response.json();
+
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        habitResult.textContent = text;
+                        habitResult.style.display = 'block';
+                    } else {
+                        habitResult.textContent = "Sorry, I couldn't generate a habit idea. Please try again.";
+                        habitResult.style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error("Error calling Gemini API:", error);
+                    habitResult.textContent = "An error occurred while generating the idea. Please check your network connection.";
+                    habitResult.style.display = 'block';
+                } finally {
+                    loadingIndicator.style.display = 'none';
+                }
+            });
+        }
+
+        // Initialize the presentation on window load
+        window.onload = () => {
+            showSlide(currentSlideIndex);
+        };
+    </script>
+</body>
+</html>
